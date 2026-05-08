@@ -35,7 +35,10 @@ using namespace std;
 void warmup_printNumbers()
 {
     cout << "\n--- Warm-up 1-A: Print 1 to 10 ---\n";
-    // TODO: write a for-loop that prints 1 2 3 4 5 6 7 8 9 10
+    for (int i = 1; i < 10; ++i) {
+        std::cout << i << " ";
+    }
+    std::cout << 10 << std::endl;
 }
 
 // Exercise 1-B
@@ -45,8 +48,14 @@ void warmup_sumFive()
     cout << "\n--- Warm-up 1-B: Sum of 5 numbers ---\n";
     int sum = 0;
     // TODO: declare an integer variable 'num'
+    int num;
     // TODO: loop 5 times: read num with cin, then add it to sum
+    for (int i = 0; i < 5; ++i) {
+        std::cin >> num;
+        sum += num;
+    }
     // TODO: print sum
+    std::cout << "Sum: " << sum << std::endl;
 }
 
 // ============================================================
@@ -86,16 +95,28 @@ void concepts_demo()
 
     // TODO 2-A: declare an integer array called 'temps' of size 7
     //           and initialize it with: 22, 19, 25, 30, 28, 17, 21
+    int temps[7] = {22, 19, 25, 30, 28, 17, 21};
 
     // TODO 2-B: print all elements of 'temps' using a for-loop
-    cout << "Temperatures: ";
+    cout << "Temperatures: \n";
     // your loop here
+    for (int temp : temps) {
+        std::cout << temp << "\n";
+    }
 
     cout << "\n";
 
     // TODO 2-C: change the 4th element (index 3) of 'temps' to 35
     //           then print it to verify
+    temps[3] = 35;
 
+    cout << "Temperatures (change the 4th element (index 3) of 'temps' to 35): \n";
+    // your loop here
+    for (int temp : temps) {
+        std::cout << temp << "\n";
+    }
+
+    cout << "\n";
 }
 
 // ============================================================
@@ -119,12 +140,22 @@ void exercise_fillArray()
 
     // TODO: ask the user to enter n (1 ≤ n ≤ 20)
     //       keep asking until n is in range
+    do {
+        std::cout << "Enter an integer in range [1, 20]: ";
+        std::cin >> n;
+    } while (n < 1 && n > 20);
 
     // TODO: loop n times and read each grade into grades[i]
+    for (int i = 0; i < n; ++i) {
+        std::cin >> grades[i];
+    }
 
     // TODO: print all n grades on one line
     cout << "You entered: ";
     // your loop here
+    for (int i = 0; i < n; ++i) {
+        std::cout << grades[i] << " ";
+    }
     cout << "\n";
 }
 
@@ -148,18 +179,28 @@ void exercise_statistics()
     // TODO: compute the sum using a loop
     int sum = 0;
     // your loop here
+    for (int num: data) {
+        sum += num;
+    }
 
     // TODO: compute the average (cast to double)
     double avg = 0.0;
     // your calculation here
+    avg = sum / (double)size;
 
     // TODO: find minimum — start with data[0] and update in a loop
     int minVal = data[0];
     // your loop here
+    for (int i = 1; i < size; ++i) {
+        if (data[i] < minVal) minVal = data[i];
+    }
 
     // TODO: find maximum — start with data[0] and update in a loop
     int maxVal = data[0];
     // your loop here
+    for (int i = 1; i < size; ++i) {
+        if (data[i] > maxVal) maxVal = data[i];
+    }
 
     cout << "Sum     : " << sum    << "\n";
     cout << "Average : " << avg    << "\n";
@@ -183,9 +224,13 @@ void exercise_statistics()
 //   Return    : int  (index of target, or -1)
 int linearSearch(int arr[], int size, int target)
 {
+    int res = -1;
     // TODO: loop through arr; if arr[i] == target return i
     // TODO: if you finish the loop without finding it, return -1
-    return -1; // replace this placeholder
+    for (int i = 0; i < size; ++i) {
+        if (target == arr[i]) { res = i; break; }
+    }
+    return res; // replace this placeholder
 }
 
 void exercise_search()
@@ -196,8 +241,18 @@ void exercise_search()
 
     // TODO: call linearSearch for target = 27 and print the result
     //       e.g.  "27 found at index 4"  or  "27 not found"
+    int i_27 = linearSearch(values, sizeof(values), 27);
 
     // TODO: call linearSearch for target = 99 and print the result
+    int i_99 = linearSearch(values, sizeof(values), 99);
+
+    std::cout << "27 ";
+    if (i_27 == -1) std::cout << "not found\n";
+    else std::cout << "found at index " << i_27;
+
+    std::cout << "99 ";
+    if (i_99 == -1) std::cout << "not found\n";
+    else std::cout << "found at index " << i_99;
 }
 
 // ----------------------------------------------------------
@@ -220,6 +275,9 @@ void exercise_countChar()
 
     int count = 0;
     // your loop here
+    for (char c : text) {
+        if (c == 'a' || c == 'A') count++;
+    }
 
     cout << "Letter 'a'/'A' appears " << count << " times.\n";
 }
@@ -244,10 +302,23 @@ void exercise_bubbleSort()
 
     // TODO: implement the two-loop bubble sort described above
     //       use a temporary variable for the swap
+    int tmp;
+    for (int i = 0; i < size - 1; ++i) {
+        for (int j = i; j < size - 1; ++j) {
+            if (arr[j] > arr[j + 1]) {
+                tmp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = tmp;
+            }
+        }
+    }
 
     // TODO: print the sorted array
     cout << "Sorted: ";
     // your loop here
+    for (int num : arr) {
+        std::cout << num << " ";
+    }
     cout << "\n";
 }
 
@@ -276,6 +347,12 @@ void challenge_reverse()
 
     // TODO: use a loop that swaps arr[i] with arr[size-1-i]
     //       stop when i reaches the midpoint (size/2)
+    int tmp;
+    for (int i = 0, j = size - 1; i < size / 2; i++, j--) {
+        tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
 
     cout << "Reversed: ";
     for (int i = 0; i < size; i++)
@@ -309,6 +386,11 @@ void challenge_removeDuplicates()
     // TODO: loop through original[]; for each element check
     //       whether it already exists in unique[0..uniqueCount-1]
     //       if NOT found, add it to unique[] and increment uniqueCount
+    unique[uniqueCount++] = original[0];
+    for (int i = 1; i < origSize; ++i) {
+        if (linearSearch(original, origSize, original[i]) == i)
+            unique[uniqueCount++] = original[i];
+    }
 
     cout << "Unique values (" << uniqueCount << "): ";
     for (int i = 0; i < uniqueCount; i++)
