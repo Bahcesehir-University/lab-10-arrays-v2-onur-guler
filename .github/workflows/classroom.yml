@@ -1,0 +1,80 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: 'SECTION 1 -- Warm-up  '
+      id: section-1-warm-up
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: 'SECTION 1 -- Warm-up  '
+        setup-command: ''
+        command: make grade_s1
+        timeout: 2
+        max-score: 10
+    - name: SECTION 2 -- Core Concepts
+      id: section-2-core-concepts
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: SECTION 2 -- Core Concepts
+        setup-command: ''
+        command: make grade_s2
+        timeout: 2
+        max-score: 10
+    - name: 'EXERCISE 3-B -- Statistics  '
+      id: exercise-3-b-statistics
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: 'EXERCISE 3-B -- Statistics  '
+        setup-command: ''
+        command: make grade_3b
+        timeout: 2
+        max-score: 15
+    - name: EXERCISE 3-C -- Linear Search
+      id: exercise-3-c-linear-search
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: EXERCISE 3-C -- Linear Search
+        setup-command: ''
+        command: make grade_3c
+        timeout: 2
+        max-score: 15
+    - name: 'EXERCISE 3-E -- Bubble Sort '
+      id: exercise-3-e-bubble-sort
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: 'EXERCISE 3-E -- Bubble Sort '
+        setup-command: ''
+        command: make grade_3e
+        timeout: 2
+        max-score: 20
+    - name: 'SECTION 4  -- Challenges  '
+      id: section-4-challenges
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: 'SECTION 4  -- Challenges  '
+        setup-command: ''
+        command: make grade_ch
+        timeout: 10
+        max-score: 30
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        SECTION-1-WARM-UP_RESULTS: "${{steps.section-1-warm-up.outputs.result}}"
+        SECTION-2-CORE-CONCEPTS_RESULTS: "${{steps.section-2-core-concepts.outputs.result}}"
+        EXERCISE-3-B-STATISTICS_RESULTS: "${{steps.exercise-3-b-statistics.outputs.result}}"
+        EXERCISE-3-C-LINEAR-SEARCH_RESULTS: "${{steps.exercise-3-c-linear-search.outputs.result}}"
+        EXERCISE-3-E-BUBBLE-SORT_RESULTS: "${{steps.exercise-3-e-bubble-sort.outputs.result}}"
+        SECTION-4-CHALLENGES_RESULTS: "${{steps.section-4-challenges.outputs.result}}"
+      with:
+        runners: section-1-warm-up,section-2-core-concepts,exercise-3-b-statistics,exercise-3-c-linear-search,exercise-3-e-bubble-sort,section-4-challenges
